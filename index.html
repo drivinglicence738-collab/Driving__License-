@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Driving License Verification</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        .container {
+            background: white;
+            max-width: 480px;
+            width: 100%;
+            border-radius: 24px;
+            padding: 25px 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f0f0f0;
+        }
+        h1 {
+            color: #1a1a1a;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .image-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 25px auto;
+            overflow: hidden;
+            border: 3px solid #2563eb;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+        .image-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .input-group input {
+            flex: 1;
+            min-width: 200px;
+            padding: 14px 16px;
+            font-size: 15px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 14px;
+            outline: none;
+            background: #fafafa;
+        }
+        .input-group input:focus {
+            border-color: #2563eb;
+            background: white;
+        }
+        .input-group button {
+            padding: 14px 24px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .section-heading {
+            color: #1a1a1a;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #2563eb;
+        }
+        .info-box {
+            background: #fafafa;
+            border-radius: 20px;
+            padding: 18px 16px;
+            border: 1px solid #f0f0f0;
+            margin-bottom: 20px;
+        }
+        .info-item {
+            margin: 12px 0;
+            font-size: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .info-item strong {
+            color: #6b7280;
+            font-weight: 500;
+            min-width: 120px;
+            font-size: 14px;
+        }
+        .info-item span {
+            color: #111827;
+            font-weight: 500;
+            flex: 1;
+            text-align: right;
+            font-size: 14px;
+            word-break: break-word;
+        }
+        .duration-box {
+            background: #fafafa;
+            border-radius: 20px;
+            padding: 18px 16px;
+            border: 1px solid #f0f0f0;
+        }
+        .duration-item {
+            margin: 10px 0;
+            font-size: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .duration-item strong {
+            color: #6b7280;
+            font-weight: 500;
+            min-width: 90px;
+        }
+        .duration-item span {
+            color: #111827;
+            font-weight: 500;
+            flex: 1;
+            text-align: right;
+        }
+        .verified-badge {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #10b981;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+            padding: 16px 32px;
+            border-radius: 50px;
+            z-index: 1000;
+            border: 2px solid white;
+            text-align: center;
+            width: 80%;
+            max-width: 280px;
+        }
+        .verified-badge.show {
+            display: block;
+            animation: popIn 0.3s ease-out;
+        }
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="verified-badge" id="verifiedBadge">✅ VERIFIED</div>
+
+    <div class="container">
+        <h1>Driving License Verification</h1>
+
+        <!-- Profile Image Circle -->
+        <div class="image-circle">
+            <img src="https://i.ibb.co/sdJYBfZ8/Whats-App-Image.jpg" alt="Profile">
+        </div>
+
+        <!-- CNIC Input -->
+        <div class="input-group">
+            <input type="text" id="cnicInput" placeholder="Enter CNIC Number">
+            <button onclick="verifyCNIC()">VERIFY</button>
+        </div>
+
+        <!-- Driver Information Section with Heading -->
+        <div class="section-heading">Driver Information</div>
+        <div class="info-box">
+            <div class="info-item">
+                <strong>License Number:</strong>
+                <span id="licenseNo">111-617080-18-CDASHP</span>
+            </div>
+            <div class="info-item">
+                <strong>CNIC:</strong>
+                <span id="cnic">3540140281301</span>
+            </div>
+            <div class="info-item">
+                <strong>Name:</strong>
+                <span id="name">ASHIR IQBAL</span>
+            </div>
+            <div class="info-item">
+                <strong>Father/Husband Name:</strong>
+                <span id="father">MUHAMMAD IQBAL</span>
+            </div>
+            <div class="info-item">
+                <strong>City:</strong>
+                <span id="city">Muridke</span>
+            </div>
+            <div class="info-item">
+                <strong>State:</strong>
+                <span id="state">Sindh Pakistan</span>
+            </div>
+            <div class="info-item">
+                <strong>Allowed Vehicles:</strong>
+                <span id="vehicles">M/CYCLE, LTV</span>
+            </div>
+        </div>
+
+        <!-- License Duration Section with Heading -->
+        <div class="section-heading">License Duration</div>
+        <div class="duration-box">
+            <div class="duration-item">
+                <strong>Issue Date:</strong>
+                <span id="issueDate">10-06-2022</span>
+            </div>
+            <div class="duration-item">
+                <strong>Valid From:</strong>
+                <span id="validFrom">10-06-2022</span>
+            </div>
+            <div class="duration-item">
+                <strong>Expiry Date:</strong>
+                <span id="expiryDate">10-06-2027</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const licenseData = {
+            "3540140281301": {
+                licenseNo: "111-617080-18-CDASHP",
+                name: "ASHIR IQBAL",
+                father: "MUHAMMAD IQBAL",
+                city: "Muridke",
+                state: "Sindh Pakistan",
+                vehicles: "M/CYCLE, LTV",
+                issueDate: "10-06-2022",
+                validFrom: "10-06-2022",
+                expiryDate: "10-06-2027"
+            }
+        };
+
+        function verifyCNIC() {
+            const input = document.getElementById('cnicInput').value.trim();
+            const badge = document.getElementById('verifiedBadge');
+            
+            const cleanInput = input.replace(/-/g, '');
+            
+            if (licenseData[cleanInput]) {
+                const data = licenseData[cleanInput];
+                
+                document.getElementById('licenseNo').textContent = data.licenseNo;
+                document.getElementById('cnic').textContent = input;
+                document.getElementById('name').textContent = data.name;
+                document.getElementById('father').textContent = data.father;
+                document.getElementById('city').textContent = data.city;
+                document.getElementById('state').textContent = data.state;
+                document.getElementById('vehicles').textContent = data.vehicles;
+                document.getElementById('issueDate').textContent = data.issueDate;
+                document.getElementById('validFrom').textContent = data.validFrom;
+                document.getElementById('expiryDate').textContent = data.expiryDate;
+                
+                badge.classList.add('show');
+                setTimeout(() => {
+                    badge.classList.remove('show');
+                }, 2000);
+            } else {
+                alert('❌ Invalid CNIC Number');
+            }
+        }
+
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const cnic = urlParams.get('cnic');
+            if (cnic) {
+                document.getElementById('cnicInput').value = cnic;
+                verifyCNIC();
+            }
+        };
+    </script>
+</body>
+</html>
